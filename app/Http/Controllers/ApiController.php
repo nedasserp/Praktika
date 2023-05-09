@@ -7,16 +7,89 @@ use Illuminate\Support\Facades\Http;
 
 class ApiController extends Controller
 {
-   public function regions()
+   public function create()
    {
-    $api = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXUyJ9.eyJjIjoxMDk1MjksImkiOiIiLCJyIjoicmNmIiwidCI6InVjIiwiYSI6MCwiaWF0IjoxNjgxNjY1OTI2fQ.bquvZumX8X_ySBonPkZ_wFEiDUvCMjRrqwQQPJXTPlB1cODHuHH8f-YT0Uw7QJ-BK31EBtMRk01ixtL450NbMKZx7m-hbKxWbzj6kimENYg5_wau58332_eKwPXWkT7EpvqddTOzGWnEqYGrYEE1ZaY9WXystLqS6_-aGDn_wyINNaO25wdBVbid8rDM8YQfmpWM6ReJHYhOlEI5sUUoWfO-2YA_sosIQs_XvjkJ8aw84V2wXl_qpADfB6Cqj-YXqlCdMH6Pv2nZxvX1ePDn6GGr3nuT6R84qLl_T1XyK-KeVJfMPZkfwwy_QNdUCzqdSTMQj8AE7ngiRsn4rN6dPA';
+    $api = config('app.apikey');
+
+   $teams = Http::withHeaders([
+      'Authorization' =>  'Bearer ' . $api,
+      'Content-Type' => 'application/json',
+      'Accept' => 'application/json',
+   ])->get('https://api.cherryservers.com/v1/teams',[
+      //'fields' => 'team',
+
+   ]);
+    $team = $teams -> json();
+    $teamid = $team[0]['id'];
+
+    $projects = Http::withHeaders([
+      'Authorization' =>  'Bearer ' . $api,
+      'Content-Type' => 'application/json',
+      'Accept' => 'application/json',
+   ])->get('https://api.cherryservers.com/v1/teams/'.$teamid.'/projects',[
+      //'fields' => 'team',
+
+   ]);
+   $project = $projects -> json();
+   $projectid = $project[0]['id'];
+
+   $plans = Http::withHeaders([
+      'Authorization' =>  'Bearer ' . $api,
+      'Content-Type' => 'application/json',
+      'Accept' => 'application/json',
+ ])->get('https://api.cherryservers.com/v1/plans',[
+   //'fields' => 'pricing'
+ ]);
+
+ $plan = $plans -> json();
+ $test = $plan[0];
+ $planslug = $plan[0]['slug'];
+ $regionslug=$plan[0]['available_regions'][0]['slug'];
+
+ $images = Http::withHeaders([
+   'Authorization' =>  'Bearer ' . $api,
+   'Content-Type' => 'application/json',
+   'Accept' => 'application/json',
+])->get('https://api.cherryservers.com/v1/plans/'.$planslug.'/images',[
+//'fields' => 'pricing'
+]);
+$image = $images -> json();
+$imageslug = $image[0]['slug'];
+
+
+
+
+//$server = Http::withHeaders([
+  // 'Authorization' =>  'Bearer ' . $api,
+  // 'Content-Type' => 'application/json',
+   //'Accept' => 'application/json',
+//])->post('https://api.cherryservers.com/v1/projects/'.$projectid.'/servers',[
+//'plan' => $planslug,
+//'image' => $imageslug,
+//'region' => $regionslug,
+//]);
+
+
+
+
+
+    return view('index')
+    ->with('teams', json_decode($teams, true))
+    ->with('projects', json_decode($projects, true))
+    ->with('plans', $plans[0])
+    ->with('images', json_decode($images, true))
+    ->with('region',$regionslug);
+    //->with('server',json_decode($server, true));
+   }
+
+
+
+   public function plans()
+   {
+      $api = config('app.apikey');
        
-    $response = Http::withHeaders([
-        'Authorization' =>  'Bearer ' . $api,
-        'Content-Type' => 'application/json',
-        'Accept' => 'application/json',
-   ])->get('https://api.cherryservers.com/v1/regions');
     
-    return view('index')->with('response', json_decode($response, true));
+    
+    return view('index')->with();
    }
 }

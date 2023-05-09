@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/create', 'App\Http\Controllers\ApiController@regions');
+Route::get('/server', 'App\Http\Controllers\ApiController@create');
