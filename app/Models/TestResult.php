@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TestResult extends Model
 {
     use HasFactory;
-    protected $fillable = ['Testas', 'Rezultatas', 'Laikas', 'Testo_parametrai','Sukurtas_serveris'];
+    protected $fillable = ['Testas', 'Rezultatas', 'Laikas', 'Testo_parametrai','Sukurtas_serveris', 'Zinute'];
     protected $casts = [
         'Testo_parametrai' => 'array',
         'Sukurtas_serveris' => 'array'

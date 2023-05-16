@@ -125,6 +125,8 @@ return [
 
     'apikey' => env('API_KEY'),
 
+    'projectid' => env('PROJECT_ID'),
+
     'cipher' => 'AES-256-CBC',
 
     /*

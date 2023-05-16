@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('Laikas');
             $table->json('Testo_parametrai');
             $table->json('Sukurtas_serveris')->nullable();
+            $table->string('Zinute');
             $table->timestamps();
         });
     }
