@@ -12,68 +12,53 @@ use Symfony\Component\Console\Input\InputOption;
 
 class CreateRandomServerTest extends TestCase
 {
-  public function test_amount()
-  {
-    $input = [
-      '300', //timeout
-      '', //region
-      '', //plan
-      'ubuntu_18_04', //image
-      '2', //testcount
-    ];
-    if($input[0]==null||!ctype_digit($input[0]))
-       {
-        $timeout = 900;
-       }
-       else
-       {
-        $timeout = $input[0];
-       }
-    if($input[1]!=null)
-       {
-        $inputregion = $input[1];
-       }
-       else
-       {
-        $inputregion = null;
-       }
-       if($input[2]!=null)
-       {
-        $inputplan = $input[2];
-       }
-       else
-       {
-        $inputplan = null;
-       }
-       if($input[3]!=null)
-       {
-        $inputimage = $input[3];
-       }
-       else
-       {
-        $inputimage = null;
-       }
-    if ($input[4]==null||!ctype_digit($input[4]))
+    public function test_randomserver()
     {
-      $count = 1;
-    }
-    else
-    {
-      $count = $input[4];
-    }
-    for ($i=0;$i<$count;$i++)
-    {
-      $this->randomserver($input, $timeout,$inputregion,$inputplan,$inputimage);
-    }
-  }
-    private function randomserver($input, $timeout,$inputregion,$inputplan,$inputimage)
-    {
-      
+      $input = [
+        config('app.timeout'), //timeout
+        config('app.region'), //region
+        config('app.plan'), //plan
+        config('app.image'), //image
+      ];
+      if($input[0]==null||!ctype_digit($input[0]))
+         {
+          $timeout = 900;
+         }
+         else
+         {
+          $timeout = $input[0];
+         }
+      if($input[1]!=null)
+         {
+          $inputregion = $input[1];
+         }
+         else
+         {
+          $inputregion = null;
+         }
+         if($input[2]!=null)
+         {
+          $inputplan = $input[2];
+         }
+         else
+         {
+          $inputplan = null;
+         }
+         if($input[3]!=null)
+         {
+          $inputimage = $input[3];
+         }
+         else
+         {
+          $inputimage = null;
+         }
       try{
+      $respo = null;
        $regionslug = $inputregion;
        $planslug = $inputplan;
        $imageslug = $inputimage;
-      
+
+       
        if($regionslug==null)
        {
         $regions = Http::withHeaders([
@@ -82,6 +67,10 @@ class CreateRandomServerTest extends TestCase
           'Accept' => 'application/json',
         ])->get('https://api.cherryservers.com/v1/regions',[
         ]);
+        if ($regions->getStatusCode() !== 200) {
+          $message = $regions;
+        $this->fail($message);
+      }
         $regionarr = $regions -> json();
         $randomregion = array_rand($regionarr);
         $regionslug = $regionarr[$randomregion]["slug"];
@@ -95,6 +84,10 @@ class CreateRandomServerTest extends TestCase
         ])->get('https://api.cherryservers.com/v1/plans',[
        'region' => $regionslug,
         ]);
+        if ($plans->getStatusCode() !== 200) {
+          $message = $plans;
+        $this->fail($message);
+      }
         $planarr = $plans -> json();
         $randomplan = array_rand($planarr);
         $planslug = $planarr[$randomplan]["slug"];
@@ -108,6 +101,10 @@ class CreateRandomServerTest extends TestCase
           'Accept' => 'application/json',
       ])->get('https://api.cherryservers.com/v1/plans/'.$planslug.'/images',[
       ]);
+      if ($images->getStatusCode() !== 200) {
+        $message = $images;
+      $this->fail($message);
+    }
           $imagearr = $images ->json();
           $randomimage = array_rand($imagearr);
           $imageslug = $imagearr[$randomimage]["slug"];
@@ -119,7 +116,7 @@ class CreateRandomServerTest extends TestCase
             'timeout' => $timeout,
           ];
           $start = microtime(true);
-          $respo = null;
+         
             $response = Http::withHeaders([
                 'Authorization' =>  'Bearer ' . config('app.apikey'),
                  'Content-Type' => 'application/json',
@@ -144,6 +141,10 @@ class CreateRandomServerTest extends TestCase
                      'Accept' => 'application/json',
                   ])->get('https://api.cherryservers.com/v1/servers/'.$serverid.'',[
                   ]);
+                  if ($resp->getStatusCode() !== 200) {
+                    $message = $resp;
+                  $this->fail($message);
+                }
                 $elapsedTime = round(microtime(true) - $start,2);
                 $respo = $resp ->json();
                 $status = $respo["state"];
@@ -193,7 +194,7 @@ class CreateRandomServerTest extends TestCase
                 $testResult = new TestResult([
                   'Testas' => 'CreateRandomServerTest',
                   'Rezultatas' => 'failed',
-                  'Laikas' => round(microtime(true) - $start,2), 
+                  'Laikas' => round(microtime(true) - 0,2), 
                   'Testo_parametrai' => $body,
                   'Sukurtas_serveris' => $respo,
                   'Zinute' => $message,

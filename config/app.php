@@ -123,9 +123,8 @@ return [
 
     'key' => env('APP_KEY'),
 
-    'apikey' => env('API_KEY'),
 
-    'projectid' => env('PROJECT_ID'),
+
 
     'cipher' => 'AES-256-CBC',
 
@@ -216,4 +215,20 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+
+    // Test configs
+
+    'apikey' => env('API_KEY'),
+
+    'projectid' => env('PROJECT_ID'),
+
+    'timeout' => env('TIMEOUT'),
+    
+    'region' => env('REGION'),
+
+    'plan' => env('PLAN'),
+
+    'image' => env('IMAGE'),
+
+    'testcount' => env('TESTCOUNT'),
 ];

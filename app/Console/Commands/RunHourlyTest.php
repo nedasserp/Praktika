@@ -28,7 +28,15 @@ class RunHourlyTest extends Command
      */
     public function handle()
     {
-        $counter =1;
+        if(config('app.testcount')==null||!ctype_digit(config('app.testcount')))
+        {
+        $counter = 1;
+        }
+        else
+        {
+        $counter =config('app.testcount');
+        }
+        
         for($i=0;$i<$counter;$i++)
         {
         Artisan::call('test');
