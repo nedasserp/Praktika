@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('test:hourly')->hourly()->withoutOverlapping();
+         $schedule->command('test:hourly')->hourly()->withoutOverlapping(); // Komandos vykdymas pridedamas prie tvarkaraščio
     }
 
     /**

@@ -28,19 +28,19 @@ class RunHourlyTest extends Command
      */
     public function handle()
     {
-        if(config('app.testcount')==null||!ctype_digit(config('app.testcount')))
+        if(config('app.testcount')==null||!ctype_digit(config('app.testcount'))) // Tikrinama testų skaičiaus įvestis
         {
-        $counter = 1;
+        $counter = 1; // Jei nebuvo įvesta
         }
         else
         {
-        $counter =config('app.testcount');
+        $counter =config('app.testcount'); // Jei buvo įvesta
         }
         
         for($i=0;$i<$counter;$i++)
         {
-        Artisan::call('test');
-        $output = Artisan::output();
+        Artisan::call('test'); // Kviečiama komanda
+        $output = Artisan::output(); // Atsakymas
         dump($output);
         }
     }

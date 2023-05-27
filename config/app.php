@@ -218,17 +218,17 @@ return [
 
     // Test configs
 
-    'apikey' => env('API_KEY'),
+    'apikey' => env('API_KEY'), // Naudojamas API raktas
 
-    'projectid' => env('PROJECT_ID'),
+    'projectid' => env('PROJECT_ID'), // Projekto ID, kuriame yra kuriami serveriai
 
-    'timeout' => env('TIMEOUT'),
+    'timeout' => env('TIMEOUT'), // Laiko tarpas, per kurį serveriai turi tapti aktyviais
     
-    'region' => env('REGION'),
+    'region' => env('REGION'), // Pasirinktas regionas
 
-    'plan' => env('PLAN'),
+    'plan' => env('PLAN'), // Pasirinktas planas
 
-    'image' => env('IMAGE'),
+    'image' => env('IMAGE'), // Pasirinktas atvaizdas
 
-    'testcount' => env('TESTCOUNT'),
+    'testcount' => env('TESTCOUNT'), // Testų vykdymo kiekis
 ];
